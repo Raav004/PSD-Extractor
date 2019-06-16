@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 const multer = require('multer');
 var path = require('path')
+const fs = require('fs');
+
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'uploads/')
@@ -36,7 +38,7 @@ router.post('/uploadfile', upload.single('myFile'), (req, res, next) => {
  const exnt =path.extname(file.originalname)
   if(exnt == '.psd'){
     var spawn = require("child_process").spawn;
-    var process = spawn('python', ["algo/t.py", 'a.psd']);
+    var process = spawn('python', ["algo/t.py", file.originalname]);
     var textChunk = ''
     process.stdout.on('data', function (chunk) {
       textChunk = chunk.toString('utf8'); // buffer to string
@@ -46,6 +48,8 @@ router.post('/uploadfile', upload.single('myFile'), (req, res, next) => {
     process.stderr.on('data', (data) => {
       console.error(`child stderr:\n${data}`);
     });
+    
   }
+
 })
 module.exports = router;

@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var PythonShell = require('python-shell');
 const multer = require('multer');
+var path = require('path')
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'uploads/')
@@ -23,21 +23,8 @@ router.get('/', function(req, res, next) {
   res.render('home', { title: 'Express' });
 });
 
-router.get('/test', (req, res) => {
+router.get('/download', (req, res) => {
   console.log("DATA", req.body.data)
-  var spawn = require("child_process").spawn;
-  var process = spawn('python', ["C:/Users/vinay/Desktop/test/t.py", 1]);
-  var textChunk = ''
-  process.stdout.on('data', function (chunk) {
-    textChunk = chunk.toString('utf8'); // buffer to string
-    res.send(textChunk);
-    console.log("textChunk", textChunk)
-  })
-  process.stderr.on('data', (data) => {
-    console.error(`child stderr:\n${data}`);
-  });
-  console.log("textChunk", textChunk)
-  
 })
 router.post('/uploadfile', upload.single('myFile'), (req, res, next) => {
   const file = req.file
@@ -46,7 +33,19 @@ router.post('/uploadfile', upload.single('myFile'), (req, res, next) => {
     error.httpStatusCode = 400
     return next(error)
   }
- 
-
+ const exnt =path.extname(file.originalname)
+  if(exnt == '.psd'){
+    var spawn = require("child_process").spawn;
+    var process = spawn('python', ["algo/t.py", 'a.psd']);
+    var textChunk = ''
+    process.stdout.on('data', function (chunk) {
+      textChunk = chunk.toString('utf8'); // buffer to string
+      //res.send(textChunk);
+      console.log("textChunk", textChunk)
+    })
+    process.stderr.on('data', (data) => {
+      console.error(`child stderr:\n${data}`);
+    });
+  }
 })
 module.exports = router;

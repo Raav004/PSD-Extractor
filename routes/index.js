@@ -26,7 +26,10 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/download', (req, res) => {
-  console.log("DATA", req.body.data)
+  
+    const file = `./results/Output.zip`;
+    res.download(file); // Set disposition and send it.
+  
 })
 router.post('/uploadfile', upload.single('myFile'), (req, res, next) => {
   const file = req.file

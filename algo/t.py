@@ -1,3 +1,4 @@
+import zipfile
 import os
 import sys
 from psd_tools import PSDImage
@@ -42,10 +43,15 @@ for layer in reversed(list(psd.descendants())):
            s += substring
            index += length
           f.write('\n'+s+'\n')
-
-root = 'uploads/'
-folders = list(os.walk(root))[1:]
+f.close()
+path = 'uploads/'
+folders = list(os.walk(path))[1:]
 for folder in folders:
     # folder example: ('FOLDER/3', [], ['file'])
     if not folder[2]:
         os.rmdir(folder[0])
+zipf = zipfile.ZipFile('Output.zip', 'w', zipfile.ZIP_DEFLATED)
+for root, dirs, files in os.walk(path):
+        for file in files:
+            zipf.write(os.path.join(root, file))
+zipf.close()

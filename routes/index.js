@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const multer = require('multer');
-var path = require('path')
+var path = require('path');
 const fs = require('fs');
 
 var storage = multer.diskStorage({
@@ -26,10 +26,10 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/download', (req, res) => {
-  
+
     const file = `./results/Output.zip`;
     res.download(file); // Set disposition and send it.
-  
+
 })
 router.post('/uploadfile', upload.single('myFile'), (req, res, next) => {
   const file = req.file
@@ -51,7 +51,7 @@ router.post('/uploadfile', upload.single('myFile'), (req, res, next) => {
     process.stderr.on('data', (data) => {
       console.error(`child stderr:\n${data}`);
     });
-    
+
   }
 
 })

@@ -6,6 +6,7 @@ var logger = require('morgan');
 var bodyParser = require('body-parser')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+const PORT = process.env.PORT || 5000;
 
 var app = express();
 
@@ -39,5 +40,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 module.exports = app;
